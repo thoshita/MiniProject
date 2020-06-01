@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block style %}
+<style>
+    .book_form{
+        margin: 20px;
+        color:black;
+    }
+            
+    .book_form label{
+        font-size: 38px;
+        font-family: cursive;
+    }
+            
+    table, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+            
+    td {
+        padding: 10px;
+        font-family: cursive;
+        font-size: medium;
+    }
+            
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    
+    .indata{
+        text-align: center;
+        padding-top: 20px;
+    }
+     
+            
+    .confirmBtn{
+        background-color:dodgerblue;
+    }
+            
+    .acceptBtn{
+        background-color: green;
+    }
+            
+    .refuseBtn{
+        background-color: red;
+    }
+            
+    .btns{
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block video %}
+https://firebasestorage.googleapis.com/v0/b/miniproject-c79ac.appspot.com/o/Videos%2FIMG_2349.mp4?alt=media&token=f1181f05-9546-4cc0-885d-ca2c50d5ba46
+{% endblock %}
+
+{% block secondcolumn %}
+<p>Enter the Book ID you want to return:</p>
+<form align="center" class="book_form" id="myForm">
+    <label>Book ID:</label>
+    <input type="text" placeholder="B00142" id="bid" autofocus style="font-family: cursive;font-size: medium;">
+    <br><br>
+    <button type="button" class="confirmBtn" onclick="bringData();"><p style="font-size: large;font-family: cursive;color: white;">Confirm</p></button>
+</form>
+<table align="center">
+    <tr>
+        <td>BOOK ID</td>
+        <td id="b"></th>
+    </tr>
+    <tr>
+        <td>ISSUED TO</td>
+        <td id="usn"></th>
+    </tr>
+    <tr>
+        <td>ISSUED ON</td>
+        <td id="iOn"></th>
+    </tr>
+    <tr>
+        <td>DUE ON</td>
+        <td id="dOn"></th>
+    </tr>
+    <tr>
+        <td>Fine Amount</td>
+        <td id="fine"></th>
+    </tr>
+</table>
+<br>
+<div class="btns">
+    <button type="button" class="acceptBtn"><p style="font-size: large;font-family: cursive;"><a href="myPayment.html" style="text-decoration: none; color: white;">Accept and Pay</a></p></button>
+    <button type="button" class="refuseBtn"><p style="font-size: large;font-family: cursive;"><a href="myMain.html" style="text-decoration: none; color: white;">Cancel and Back</a></p></button>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    var database = firebase.database();
+        
+    function bringData(){
+        var book=document.getElementById("bid").value;
+        document.getElementById("b").innerHTML = book
+        var ref=database.ref(book);
+        ref.on('value',gotData,errData);
+        function gotData(data){
+            var date1 = new Date(data.val().dueDate);
+            var date2 = new Date();
+            console.log(date1,"today:"+date2)
+            var Difference_In_Time = date2.getTime() - date1.getTime();  
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+            console.log(Math.floor(Difference_In_Days))
+            document.getElementById("usn").innerHTML = data.val().usn;
+            document.getElementById("iOn").innerHTML = data.val().issueDate;
+            document.getElementById("dOn").innerHTML = data.val().dueDate;
+            document.getElementById("fine").innerHTML = "Rs:"+Math.floor(Difference_In_Days)
+            firebase.database().ref().child('Temporary').update({'fine': Math.floor(Difference_In_Days),'bookId':book});
+        }
+        function errData(err){
+            console.log("Error!");
+            console.log(err);
+        }
+        document.getElementById("myForm").reset();
+    }
+</script>
+{% endblock %}

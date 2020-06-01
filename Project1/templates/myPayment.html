@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block video %}
+https://firebasestorage.googleapis.com/v0/b/miniproject-c79ac.appspot.com/o/Videos%2FIMG_2349.mp4?alt=media&token=f1181f05-9546-4cc0-885d-ca2c50d5ba46
+{% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block secondcolumn %}
+<form>
+    <label for="img">Select image:</label>
+    <input type="file" id="Test_Image" name="img" accept="image/*">
+    <button type="button" onclick="inputToFirebase();">SUBMIT</button>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+    function inputToFirebase(){
+    var storage= firebase.storage();
+    var storageRef = storage.ref();
+    // Get the file from DOM
+    var file = document.getElementById("Test_Image").files[0];                
+    //dynamically set reference to the file name
+    var thisRef = storageRef.child("Image");
+
+    //put request upload file to firebase storage
+    thisRef.put(file).then(function(snapshot) {
+        alert("File Uploaded")
+        console.log('Uploaded a blob or file!');
+        location.href="imageProcessing";
+    });
+}
+</script>
+{% endblock %}
