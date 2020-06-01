@@ -1,0 +1,17 @@
+E – Returning system is an integrated system, designed to impart library book returning system in an effective and hustle free way. 
+It helps students to return their books faster without the supervision of librarian and also is an alternate for manual fine collection. 
+This integrated system consists of display, barcode reader, money storage vault and book storage vault. 
+The application software is developed in such a way that it takes restricted input from the user and gets them through the screen. 
+ 
+Basically, this application takes book code as the input and matches it with the pre-stored details in the database and displays the user incase of fine else accepts the book and disposes into book storage vault. 
+Our one of the focuses is to reduce the manual efforts and also the chaos created in providing the exact change during fine collection. 
+So, we have included hustle free change-exchange feature. 
+When user has to pay the fine, he/she can deposit it at the deposit port and then system carries out image processing for detecting the cash say coins/notes. 
+After determining the value of coins/notes deposited respective validations will be performed.  
+ 
+ References that helped us in this project:
+ 1. For integrating Arduino:
+ https://www.instructables.com/id/Controlling-Arduino-with-python-based-web-API-No-p/
+ 2. For Coin and Note Detection:
+ Data Activator YouTube Channel for yolov3 Custom Object Detection.
+ 3. Edx Web Course - for Web Development using python
